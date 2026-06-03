@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selected Labs in AI – Study Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SIDEBAR NAV
+══════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">⬡</span>
+    <span class="brand-text">AI Study Hub</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-page="home">
+      <span class="nav-icon">◈</span><span>Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" data-page="bank">
+      <span class="nav-icon">◉</span><span>Question Bank</span>
+    </a>
+    <a href="#" class="nav-item" data-page="mcq">
+      <span class="nav-icon">◎</span><span>MCQ Practice</span>
+    </a>
+    <a href="#" class="nav-item" data-page="tf">
+      <span class="nav-icon">◐</span><span>True / False</span>
+    </a>
+    <a href="#" class="nav-item" data-page="quiz">
+      <span class="nav-icon">◆</span><span>Quiz Mode</span>
+    </a>
+    <a href="#" class="nav-item" data-page="flashcards">
+      <span class="nav-icon">◇</span><span>Flashcards</span>
+    </a>
+    <a href="#" class="nav-item" data-page="favorites">
+      <span class="nav-icon">★</span><span>Favorites</span>
+    </a>
+    <a href="#" class="nav-item" data-page="stats">
+      <span class="nav-icon">▦</span><span>Statistics</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+      <span id="themeIcon">☀</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════
+     MOBILE TOP BAR
+══════════════════════════════════════════ -->
+<header class="topbar">
+  <button class="hamburger" id="hamburger">☰</button>
+  <span class="topbar-title">AI Study Hub</span>
+  <button class="theme-toggle-mobile" id="themeToggleMobile">☀</button>
+</header>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<main class="main-content" id="mainContent">
+
+  <!-- ── DASHBOARD ── -->
+  <section class="page active" id="page-home">
+    <div class="page-header">
+      <h1 class="page-title">Selected Labs in AI</h1>
+      <p class="page-subtitle">Your complete study companion for the final exam</p>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-grid">
+      <div class="stat-card" data-color="cyan">
+        <span class="stat-number" id="totalQ">0</span>
+        <span class="stat-label">Total Questions</span>
+      </div>
+      <div class="stat-card" data-color="green">
+        <span class="stat-number" id="studiedQ">0</span>
+        <span class="stat-label">Studied</span>
+      </div>
+      <div class="stat-card" data-color="yellow">
+        <span class="stat-number" id="favQ">0</span>
+        <span class="stat-label">Favorites</span>
+      </div>
+      <div class="stat-card" data-color="red">
+        <span class="stat-number" id="bookmarkQ">0</span>
+        <span class="stat-label">Bookmarked</span>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>Overall Progress</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <!-- Topic breakdown -->
+    <h2 class="section-heading">Topics Covered</h2>
+    <div class="topic-cards" id="topicCards"></div>
+
+    <!-- Quick actions -->
+    <h2 class="section-heading">Quick Actions</h2>
+    <div class="quick-actions">
+      <button class="action-btn" onclick="navigateTo('quiz')">
+        <span class="action-icon">◆</span>
+        <span>Start Quiz</span>
+      </button>
+      <button class="action-btn" onclick="navigateTo('flashcards')">
+        <span class="action-icon">◇</span>
+        <span>Flashcards</span>
+      </button>
+      <button class="action-btn" onclick="showRandomQuestion()">
+        <span class="action-icon">⟳</span>
+        <span>Random Q</span>
+      </button>
+      <button class="action-btn" onclick="navigateTo('bank')">
+        <span class="action-icon">◉</span>
+        <span>Browse All</span>
+      </button>
+    </div>
+
+    <!-- Random question modal trigger area -->
+    <div id="randomModal" class="modal hidden">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div id="randomContent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUESTION BANK ── -->
+  <section class="page" id="page-bank">
+    <div class="page-header">
+      <h1 class="page-title">Question Bank</h1>
+      <p class="page-subtitle">Browse all <span id="bankCount">0</span> questions</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search questions…" />
+      </div>
+      <select class="filter-select" id="topicFilter">
+        <option value="all">All Topics</option>
+      </select>
+      <select class="filter-select" id="typeFilter">
+        <option value="all">All Types</option>
+        <option value="mcq">MCQ</option>
+        <option value="tf">True/False</option>
+      </select>
+      <button class="btn-outline" onclick="toggleAllAnswers()">👁 Toggle Answers</button>
+    </div>
+
+    <div id="bankList" class="question-list"></div>
+  </section>
+
+  <!-- ── MCQ SECTION ── -->
+  <section class="page" id="page-mcq">
+    <div class="page-header">
+      <h1 class="page-title">MCQ Practice</h1>
+      <p class="page-subtitle">Multiple Choice Questions with instant feedback</p>
+    </div>
+    <div class="toolbar">
+      <select class="filter-select" id="mcqTopicFilter">
+        <option value="all">All Topics</option>
+      </select>
+      <button class="btn-outline" onclick="shuffleMcq()">⟳ Shuffle</button>
+    </div>
+    <div id="mcqList" class="question-list"></div>
+  </section>
+
+  <!-- ── TRUE/FALSE SECTION ── -->
+  <section class="page" id="page-tf">
+    <div class="page-header">
+      <h1 class="page-title">True / False</h1>
+      <p class="page-subtitle">Test your conceptual understanding</p>
+    </div>
+    <div id="tfList" class="question-list"></div>
+  </section>
+
+  <!-- ── QUIZ MODE ── -->
+  <section class="page" id="page-quiz">
+    <div class="page-header">
+      <h1 class="page-title">Quiz Mode</h1>
+      <p class="page-subtitle">Timed quiz with automatic scoring</p>
+    </div>
+
+    <!-- Quiz setup -->
+    <div id="quizSetup" class="quiz-setup-card">
+      <h2>Configure Your Quiz</h2>
+      <div class="setup-row">
+        <label>Number of Questions</label>
+        <select id="quizCount">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+      <div class="setup-row">
+        <label>Question Type</label>
+        <select id="quizType">
+          <option value="all">Mixed</option>
+          <option value="mcq">MCQ Only</option>
+          <option value="tf">True/False Only</option>
+        </select>
+      </div>
+      <div class="setup-row">
+        <label>Topic</label>
+        <select id="quizTopic">
+          <option value="all">All Topics</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="startQuiz()">▶ Start Quiz</button>
+    </div>
+
+    <!-- Quiz in progress -->
+    <div id="quizProgress" class="hidden">
+      <div class="quiz-meta">
+        <span id="quizQNum">Q 1 / 10</span>
+        <span id="quizScore">Score: 0</span>
+        <div class="quiz-bar"><div id="quizBarFill" class="quiz-bar-fill"></div></div>
+      </div>
+      <div id="quizQuestion" class="quiz-card"></div>
+      <div class="quiz-nav">
+        <button class="btn-outline" onclick="skipQuizQ()">Skip →</button>
+        <button class="btn-primary" id="quizNextBtn" onclick="nextQuizQ()" disabled>Next →</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="quizResults" class="hidden quiz-results"></div>
+  </section>
+
+  <!-- ── FLASHCARDS ── -->
+  <section class="page" id="page-flashcards">
+    <div class="page-header">
+      <h1 class="page-title">Flashcards</h1>
+      <p class="page-subtitle">Click a card to reveal the answer</p>
+    </div>
+    <div class="flash-controls">
+      <button class="btn-outline" onclick="prevFlash()">← Prev</button>
+      <span id="flashCounter">1 / 0</span>
+      <button class="btn-outline" onclick="nextFlash()">Next →</button>
+      <button class="btn-outline" onclick="shuffleFlash()">⟳ Shuffle</button>
+      <select class="filter-select" id="flashTopic">
+        <option value="all">All Topics</option>
+      </select>
+    </div>
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="flashcard" onclick="flipFlash()">
+        <div class="flashcard-inner" id="flashcardInner">
+          <div class="flashcard-front" id="flashFront"></div>
+          <div class="flashcard-back" id="flashBack"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-hint">Tap card to flip</div>
+  </section>
+
+  <!-- ── FAVORITES ── -->
+  <section class="page" id="page-favorites">
+    <div class="page-header">
+      <h1 class="page-title">Favorites & Bookmarks</h1>
+      <p class="page-subtitle">Your saved questions</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="favList">★ Favorites</button>
+      <button class="tab" data-tab="bookList">⚑ Bookmarks</button>
+    </div>
+    <div id="favList" class="question-list tab-content active"></div>
+    <div id="bookList" class="question-list tab-content"></div>
+  </section>
+
+  <!-- ── STATISTICS ── -->
+  <section class="page" id="page-stats">
+    <div class="page-header">
+      <h1 class="page-title">Study Statistics</h1>
+      <p class="page-subtitle">Track your learning journey</p>
+    </div>
+    <div class="stats-grid" id="detailedStats"></div>
+    <h2 class="section-heading">Topic Breakdown</h2>
+    <div id="topicStats" class="topic-stats-list"></div>
+    <h2 class="section-heading">Quiz History</h2>
+    <div id="quizHistory" class="quiz-history-list"></div>
+    <button class="btn-outline" style="margin-top:2rem" onclick="clearStats()">⟳ Reset Statistics</button>
+  </section>
+
+</main>
+
+<!-- Overlay for mobile sidebar -->
+<div class="overlay hidden" id="overlay" onclick="closeSidebar()"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
